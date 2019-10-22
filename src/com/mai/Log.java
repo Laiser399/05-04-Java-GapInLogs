@@ -1,4 +1,4 @@
-package com.mai.generator;
+package com.mai;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,7 +24,7 @@ public class Log {
         this.id = id;
     }
 
-    private Log(Date date, Type type, int id) {
+    public Log(Date date, Type type, int id) {
         this.date = date;
         this.type = type;
         this.id = id;
@@ -34,14 +34,18 @@ public class Log {
         return date;
     }
 
-    public Log createResultLog(long gapMs) {
-        if (!isQuery())
-            throw new RuntimeException("Called \"createResultLog\" for result log.");
-        return new Log(new Date(date.getTime() + gapMs), Type.Result, id);
+    public Type getType() {
+        return type;
     }
 
-    public boolean isQuery() {
-        return type == Type.Query;
+    public int getId() {
+        return id;
+    }
+
+    public Log createResultLog(long gapMs) {
+        if (type != Type.Query)
+            throw new RuntimeException("Called \"createResultLog\" for result log.");
+        return new Log(new Date(date.getTime() + gapMs), Type.Result, id);
     }
 
     @Override
